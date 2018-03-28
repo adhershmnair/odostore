@@ -53,7 +53,10 @@ class Main {
 
 	private static function routing(){
 		require CORE_PATH.'Router.php';
-		$request = $_SERVER['REQUEST_URI'];
+		$request = $_SERVER['PHP_SELF'];
+		$requesturi = explode('index.php', $request);
+		unset($requesturi[0]);
+		$request = implode($requesturi);
 		$router = new Router($request);
 		include ROUTE_PATH . "routes.php";
 		if (!defined('PLATFORM')) {
