@@ -5,7 +5,7 @@ class Mysql{
 	public function __construct($config = array()){
 		$host = isset($config['host'])? $config['host'] : 'localhost';
 		$user = isset($config['user'])? $config['user'] : 'root';
-		$password = isset($config['password'])? $config['password'] : 'admin';
+		$password = isset($config['password'])? $config['password'] : '';
 		$dbname = isset($config['dbname'])? $config['dbname'] : 'odo';
 		$port = isset($config['port'])? $config['port'] : '3306';
 		$charset = isset($config['charset'])? $config['charset'] : 'utf8';

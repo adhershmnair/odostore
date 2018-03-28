@@ -16,21 +16,18 @@ class Main {
 		define("CONTROLLER_PATH", APP_PATH . "controllers" . DS);
 		define("MODEL_PATH", APP_PATH . "models" . DS);
 		define("VIEW_PATH", ROOT . "templates" . DS);
+		define("ROUTE_PATH", ROOT . "routes" . DS);
 		define("CORE_PATH", FRAMEWORK_PATH . "core" . DS);
 		define('DB_PATH', FRAMEWORK_PATH . "database" . DS);
 		define("LIB_PATH", FRAMEWORK_PATH . "libraries" . DS);
 		define("HELPER_PATH", FRAMEWORK_PATH . "helpers" . DS);
 		define("UPLOAD_PATH", PUBLIC_PATH . "uploads" . DS);
-		define("PLATFORM", isset($_REQUEST['p']) ? $_REQUEST['p'] : 'home');
-		define("CONTROLLER", isset($_REQUEST['c']) ? $_REQUEST['c'] : 'Index');
-		define("ACTION", isset($_REQUEST['a']) ? $_REQUEST['a'] : 'index');
-		define("CURRENT_CONTROLLER", CONTROLLER_PATH . PLATFORM . DS);
-		define("CURRENT_VIEW", VIEW_PATH . PLATFORM . DS);
+		$GLOBALS['config'] = include CONFIG_PATH . "config.php";
 		require CORE_PATH . "Controller.php";
 		require CORE_PATH . "Loader.php";
 		require DB_PATH . "Mysql.php";
 		require CORE_PATH . "Model.php";
-		$GLOBALS['config'] = include CONFIG_PATH . "config.php";
+		self::routing();
 		session_start();		
 	}
 
@@ -41,9 +38,9 @@ class Main {
 
 	private static function load($classname){
 		if (substr($classname, -10) == "Controller"){
-			require_once CURRENT_CONTROLLER . "$classname.php";
+			require_once CURRENT_CONTROLLER . ucfirst($classname).".php";
 		} elseif (substr($classname, -5) == "Model"){
-			require_once  MODEL_PATH . "$classname.php";
+			require_once  MODEL_PATH . ucfirst($classname).".php";
 		}
 	}
 
@@ -52,6 +49,31 @@ class Main {
 		$action_name = ACTION . "Action";
 		$controller = new $controller_name;
 		$controller->$action_name();
+	}
+
+	private static function routing(){
+		require CORE_PATH.'Router.php';
+		$request = $_SERVER['REQUEST_URI'];
+		$router = new Router($request);
+		include ROUTE_PATH . "routes.php";
+		if (!defined('PLATFORM')) {
+			define("PLATFORM", 'error');
+		}
+		if (!defined('CONTROLLER')) {
+			define("CONTROLLER", 'Error404');
+		}
+		if (!defined('ACTION')) {
+			define("ACTION", 'index');
+		}
+		$plarform = !empty(PLATFORM)? PLATFORM . DS: '';
+		if (!defined('CURRENT_CONTROLLER')) {
+			define("CURRENT_CONTROLLER", CONTROLLER_PATH . $plarform);
+		}
+		if (!defined('CURRENT_VIEW')) {
+			define("CURRENT_VIEW", VIEW_PATH . PLATFORM . DS);
+		}
+
+
 	}
 
 }
