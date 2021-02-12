@@ -1,22 +1,11 @@
 {
-  "name": "adhershmnair/odostore",
-  "version": "1.0.0",
-  "description": "Custom Framework for Testing Purpose",
-  "keywords": [
-    "odostore",
-    "odo",
-    "adhershmnair",
-    "Adharsh m"
-  ],
-  "homepage": "https://github.com/adhershmnair/odostore",
-  "type": "library",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Adharsh M",
-      "homepage": "http://www.odostore.in"
-    }
-  ],
-  "minimum-stability": "stable",
-  "prefer-stable": true
+    "name": "adhershmnair/odostore",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Adharsh M",
+            "email": "adharsh.m@zyxware.com"
+        }
+    ],
+    "require": {}
 }
